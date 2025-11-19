@@ -1,4 +1,5 @@
 import unittest
+import random
 from timeline import timeline
 from event import event
 
@@ -23,13 +24,8 @@ class TestTimeline(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.timeline.remove(self.event2)
 
-    def test_swap_events(self):
-        self.timeline.swap(0, 2)
-        self.assertEqual(self.timeline.start, self.event3)
-        self.assertEqual(self.timeline.end, self.event1)
-
     def test_sort_timeline(self):
-        self.timeline.swap(0, 2)  # Swap to unsort
+        self.timeline.reverse()
         self.timeline.sort()
         self.assertEqual(self.timeline.start, self.event1)
         self.assertEqual(self.timeline.end, self.event3)
@@ -66,6 +62,23 @@ class TestTimeline(unittest.TestCase):
         self.timeline.add_sorted(new_event, rev=True)
         self.assertEqual(len(self.timeline), 4)
         self.assertEqual(str(self.timeline), "2023-12-25→2023-07-04→2023-05-01→2023-01-01")
+    
+    def test_random_list(self):
+        dates = [f"2023-{str(month).zfill(2)}-{str(day).zfill(2)}" for month in range(1, 13) for day in range(1, 29)]
+        random_events = [event(date, f"Event on {date}") for date in dates]
+        random.shuffle(random_events)
+        
+        rand_timeline = timeline()
+        for ev in random_events:
+            rand_timeline.add(ev)
+        
+        rand_timeline.sort()
+        
+        sorted_dates = sorted(dates)
+        current = rand_timeline.start
+        for date in sorted_dates:
+            self.assertEqual(current.date, date)
+            current = current.next
 
 if __name__ == '__main__':
     unittest.main()

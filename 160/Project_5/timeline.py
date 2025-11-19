@@ -73,58 +73,62 @@ class timeline:
                 current = current.previous
         raise ValueError("event not found in the Timeline.")
     
-    def swap(self, ind1: int, ind2: int) -> None:
-        # for simplicity's sake, force ind1<ind2
-        ind1, ind2 = min(ind1, ind2), max(ind1, ind2)
-        if (ind1 < 0 or ind1 >= self.count or ind2 < 0 or ind2 >= self.count):
-            raise IndexError("Index out of range.")
-        if ind1 == ind2:
-            return
-        ptr1=self.start
-        ptr2=self.start
-        for i in range(ind2):
-            if i<ind1:
-                ptr1=ptr1.next
-            ptr2=ptr2.next
-        # now ptr1 is equivalent to self[ind1] and ptr2 is equivalent to self[ind2]
-        ptr2.previous.next=ptr1
-        ptr1.next.previous=ptr2
-        if ptr1.previous:
-            ptr1.previous.next=ptr2
-        else:
-            self.start=ptr2
-        if ptr2.next:
-            #todo: have ptr2.next to ptr2
-            ptr2.next.previous=ptr1
-        else:
-            self.end=ptr1
-        # now actually swap ptr1 and ptr2 next/prev
-        ptr1.previous, ptr2.previous = ptr2.previous, ptr1.previous
-        ptr1.next, ptr2.next = ptr2.next, ptr1.next
-
+    def reverse(self) -> None:
+        # just reverses self
+        current = self.start
+        self.start, self.end = self.end, self.start
+        while current:
+            current.previous, current.next = current.next, current.previous
+            current = current.previous  # because we swapped next and previous
     
     def sort(self, rev=False) -> None:
         if self.count < 2:
             # already sorted
             return
-        for i in range(self.count-1):
-            node_i=self.start
-            for _ in range(i):
-                node_i=node_i.next
-            ptr=node_i
-            extr_event=ptr
-            extr_ind=i
-            for j in range(i+1, self.count):
-                ptr=ptr.next
-                if (not rev and ptr < extr_event) or (rev and ptr > extr_event):
-                    extr_event=ptr
-                    extr_ind=j
-            self.swap(i, extr_ind)
-        # print(self)
+
+        current = self.start.next
+        while current:
+            ptr = current
+            nxt = current.next # save prev and next since ptr may become detached
+            prev = ptr.previous
+
+            # if ptr is out of order, move it until it is
+            if prev and ((not rev and ptr < prev) or (rev and ptr > prev)):
+                # Detach ptr
+                prev.next = ptr.next
+                if ptr.next:
+                    ptr.next.previous = prev
+                else:
+                    # ptr was the end
+                    self.end = prev
+
+                # Scan back to find insertion point
+                scan = prev
+                while scan and ((not rev and ptr < scan) or (rev and ptr > scan)):
+                    scan = scan.previous
+
+                # Insert after scan (None = add as self.start)
+                if scan is None:
+                    ptr.previous = None
+                    ptr.next = self.start
+                    self.start.previous = ptr
+                    self.start = ptr
+                else:
+                    ptr.previous = scan
+                    ptr.next = scan.next
+                    scan.next = ptr
+                    if ptr.next:
+                        ptr.next.previous = ptr
+                    else:
+                        self.end = ptr
+
+            current = nxt
     
     def add_sorted(self, e: event, rev=False) -> None:
         if not isinstance(e, event):
-            raise ValueError("Can only add event objects to Timeline!")
+            raise NotImplementedError
+        if e.next is not None or e.previous is not None:
+            raise NotImplementedError
         self.sort(rev=rev)
         if self.start is None:
             self.start = e
