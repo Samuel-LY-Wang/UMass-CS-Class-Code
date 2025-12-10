@@ -17,6 +17,20 @@ class Bag {
         return this.size;
     }
 
+    public int get(int index) {
+        if (index < 0 || index >= this.size) {
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
+        }
+        return this.data[index];
+    }
+
+    public void set(int index, int value) {
+        if (index < 0 || index >= this.size) {
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
+        }
+        this.data[index] = value;
+    }
+
     public void add(int value) {
         if (this.size == this.data.length) {
             int[] newData = new int[this.data.length * 2];

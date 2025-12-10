@@ -1,6 +1,9 @@
 class PrimeFunctions {
-    public static boolean isPrime(int n) {
-        for (int i=2; i*i<n; i++) {
+    public static boolean IsPrime(int n) {
+        if (n < 2) {
+            return false;
+        }
+        for (int i=2; i*i<=n; i++) {
             if (n%i==0) {
                 return false;
             }
@@ -12,7 +15,7 @@ class PrimeFunctions {
         int count = 0;
         int[] primes = new int[n];
         for (int i=2; i<n; i++) {
-            if (isPrime(i)) {
+            if (IsPrime(i)) {
                 primes[count] = i;
                 count++;
             }
@@ -27,7 +30,7 @@ class PrimeFunctions {
         int[] factors = new int[n];
         int count = 0;
         for (int i=2; i<=n; i++) {
-            while (n%i==0 && isPrime(i)) {
+            while (n%i==0 && IsPrime(i)) {
                 factors[count] = i;
                 count++;
                 n /= i;
