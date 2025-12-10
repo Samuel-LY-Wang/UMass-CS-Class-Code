@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class GameDriver {
     private static GameState currentState;
-    public static GameState getCurrentState() {
+    public static GameState getCurrentGameState() {
         return currentState;
     }
     public static void main(String[] args) {
@@ -19,17 +19,17 @@ public class GameDriver {
             System.out.println(wizard.getName() + " Health: " + wizard.getHealth());
             System.out.println(dragon.getName() + " Health: " + dragon.getHealth());
             currentState = new GameState(p, pHealth);
-            String wizardAction = wizard.ChooseAction(s, dragon);
+            String wizardAction = wizard.chooseAction(s, dragon);
             switch (wizardAction) {
                 case "RETREAT":
-                    System.out.println("You have retreated. Game over.");
+                    System.out.println(wizard.getName() + " runs away, and lives to fight another day");
                     gameRunning = false;
                     break;
                 case "UNDO":
                     GameState previousState = history.pop();
                     if (previousState != null) {
-                        pHealth[0] = previousState.getHealth(0);
-                        pHealth[1] = previousState.getHealth(1);
+                        pHealth[0] = previousState.getCEHealth(0);
+                        pHealth[1] = previousState.getCEHealth(1);
                         System.out.println("Reverted to previous state.");
                     } else {
                         System.out.println("No previous state to revert to.");

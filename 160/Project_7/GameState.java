@@ -10,7 +10,7 @@ public class GameState {
         return this.Beings[index];
     }
 
-    public int getHealth(int index) {
+    public int getCEHealth(int index) {
         return this.BeingsHealth[index];
     }
 }

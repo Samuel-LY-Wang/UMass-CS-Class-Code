@@ -1,5 +1,5 @@
 import java.util.Scanner;
 
 public interface PlayerControlled {
-    String ChooseAction(Scanner input, CombatEntity target);
+    String chooseAction(Scanner input, CombatEntity target);
 }

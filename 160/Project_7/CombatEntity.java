@@ -16,7 +16,7 @@ public abstract class CombatEntity {
     
     }
 
-    public String takeDamage(int damage, String source) {
+    public String takeHit(int damage, String source) {
         this.curHealth -= damage;
         return "" + this.name + " takes a hit for " + damage + " damage from " + source;
     }
@@ -37,6 +37,10 @@ public abstract class CombatEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setHealth(int health) {
+        this.curHealth = health;
     }
 
     public abstract String attack(CombatEntity target);

@@ -1,17 +1,18 @@
 import java.util.Scanner;
 
 public class Wizard extends CombatEntity implements PlayerControlled {
+    private static final int HEAL_AMOUNT = 20;
     public Wizard(String name) {
         super(name, 100, 15);
     }
 
     @Override
     public String attack(CombatEntity target) {
-        return target.takeDamage(this.attackPower, this.name + "'s magic");
+        return target.takeHit(this.attackPower, this.name + "'s magic");
     }
 
     @Override
-    public String ChooseAction(Scanner input, CombatEntity target) {
+    public String chooseAction(Scanner input, CombatEntity target) {
         while (true) {
             System.out.println("Choose action for " + this.name + ":");
             System.out.println("0. Retreat");
@@ -25,7 +26,7 @@ public class Wizard extends CombatEntity implements PlayerControlled {
                 case 1:
                     return this.attack(target);
                 case 2:
-                    return this.recover(10, this.name + "'s spell");
+                    return this.recover(HEAL_AMOUNT, this.name + "'s spell");
                 case 3:
                     return "UNDO";
                 default:
