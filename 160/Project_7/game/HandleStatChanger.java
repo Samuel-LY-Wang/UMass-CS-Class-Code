@@ -77,6 +77,19 @@ public class HandleStatChanger {
                         throw new IllegalArgumentException("Invalid characteristic: " + characteristic);
                 }
                 break;
+            case "undos":
+                if (!(entity instanceof Player)) {
+                    throw new IllegalArgumentException("Only players can have undos.");
+                }
+                Player player = (Player) entity;
+                switch (characteristic) {
+                    case "add":
+                        player.giveUndos((int) amount);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid characteristic for undos: " + characteristic);
+                }
+                break;
             default:
                 throw new IllegalArgumentException("Invalid stat: " + stat);
         }

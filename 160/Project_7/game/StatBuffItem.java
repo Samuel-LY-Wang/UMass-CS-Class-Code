@@ -2,7 +2,7 @@ package game;
 
 public class StatBuffItem extends Item {
     protected final int numBuffs;
-    protected final String[] stats; // "attack", "defense", "maxHealth", "speed"
+    protected final String[] stats; // "attack", "defense", "maxHealth", "speed", "undos"
     protected final String[] characteristics; // "add", "subtract", "multiply", "divide"
     protected final double[] amounts;
 

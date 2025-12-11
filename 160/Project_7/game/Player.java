@@ -1,9 +1,11 @@
 package game;
 
 public class Player extends Entity {
+    private int num_undos;
     private int gold;
     public Player(String name, int maxHealth, int baseATK, int baseDefense, int speedBase, double position, int startingGold) {
         super(name, maxHealth, baseATK, baseDefense, speedBase, position);
+        this.num_undos = 0; // undos only given by items
         this.gold = startingGold;
     }
 
@@ -22,5 +24,9 @@ public class Player extends Entity {
         }
         this.gold -= amount;
         return true;
+    }
+
+    public void giveUndos(int amount) {
+        this.num_undos += amount;
     }
 }
