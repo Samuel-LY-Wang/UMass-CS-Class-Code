@@ -1,6 +1,6 @@
 package game;
 
-public class Player extends Entity {
+public abstract class Player extends Entity {
     private int num_undos;
     private int gold;
     public Player(String name, int maxHealth, int baseATK, int baseDefense, int speedBase, double position, int startingGold) {
@@ -28,5 +28,14 @@ public class Player extends Entity {
 
     public void giveUndos(int amount) {
         this.num_undos += amount;
+    }
+
+    public boolean Undo() {
+        // return: Was undo successful?
+        if (this.num_undos <= 0) {
+            return false;
+        }
+        this.num_undos -= 1;
+        return true;
     }
 }
