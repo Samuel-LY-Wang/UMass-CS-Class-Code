@@ -1,0 +1,14 @@
+package game;
+
+public class Item {
+    protected final int id;
+    protected final String name;
+    protected final String description;
+    protected final int price; // I'll just set as gold probably, also an int
+    public Item(int id, String name, String description, int price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+}
