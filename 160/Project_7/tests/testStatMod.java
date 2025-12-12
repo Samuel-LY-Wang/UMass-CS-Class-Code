@@ -3,6 +3,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import game.Items.*;
 import game.CombatEntities.Entity;
+import game.CombatEntities.Player.Player;
 
 public class testStatMod {
     @Test
@@ -51,5 +52,14 @@ public class testStatMod {
         s.applyBuffs(e);
         assertEquals(30, e.getSpeed(), 1e-9);
         assertEquals(0, e.getDefense(), 1e-9);
+    }
+
+    @Test
+    public void testGiveUndos() {
+        Player e = new Player("Test Entity", 100, 10, 0, 25, 0.0, 0);
+        StatModifier[] mods = {new UndoGiver(3)};
+        StatBuffItem s = new StatBuffItem(0, "Rewind", "Allows you to rewind three times.", 0, mods);
+        s.applyBuffs(e);
+        assertEquals(3, e.getNumUndos(), 1e-9);
     }
 }
