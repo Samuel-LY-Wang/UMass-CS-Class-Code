@@ -1,9 +1,10 @@
 package tests;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import game.Combat.Entity;
+import game.Combat.Player.Player;
 import game.Items.*;
-import game.CombatEntities.Entity;
-import game.CombatEntities.Player.Player;
 
 public class testStatMod {
     @Test

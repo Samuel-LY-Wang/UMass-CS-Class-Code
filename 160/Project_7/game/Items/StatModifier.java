@@ -1,7 +1,7 @@
 package game.Items;
 
-import game.CombatEntities.Entity;
+import game.Combat.Player.Player;
 
 public interface StatModifier {
-    void applyModifier(Entity entity);
+    void applyModifier(Player entity);
 }

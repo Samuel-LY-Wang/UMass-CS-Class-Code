@@ -1,6 +1,6 @@
 package game.Items;
 
-import game.CombatEntities.Entity;
+import game.Combat.Player.Player;
 
 public class MultiplyStat implements StatModifier {
     private final String stat;
@@ -11,7 +11,7 @@ public class MultiplyStat implements StatModifier {
     }
 
     @Override
-    public void applyModifier(Entity entity) {
+    public void applyModifier(Player entity) {
         entity.multiplyStat(this.stat, this.factor);
     }
 }

@@ -1,4 +1,4 @@
-package game.CombatEntities.Player;
+package game.Combat.Player;
 import java.util.Scanner;
 
 public class ActionMapper {

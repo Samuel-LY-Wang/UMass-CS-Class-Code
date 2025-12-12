@@ -1,16 +1,20 @@
-package game.CombatEntities.Player;
+package game.Combat.Player;
 
-import game.CombatEntities.Entity;
+import game.Combat.Entity;
 
 public class Player extends Entity {
-    private int num_undos;
-    private int gold;
-    private double goldMult;
+    protected int num_undos;
+    protected int gold;
+    protected double goldMult;
+    protected double minAtkMult;
+    protected double maxAtkMult;
     public Player(String name, int maxHealth, int baseATK, int baseDefense, int speedBase, double position, int startingGold) {
         super(name, maxHealth, baseATK, baseDefense, speedBase, position);
         this.num_undos = 0; // undos only given by items
         this.goldMult = 1.0; // Gold multiplier from items
         this.gold = startingGold;
+        this.minAtkMult = 1.0; // Minimum attack multiplier from items
+        this.maxAtkMult = 1.0; // Maximum attack multiplier from items
     }
 
     public int getGold() {
@@ -49,5 +53,23 @@ public class Player extends Entity {
         }
         this.num_undos -= 1;
         return true;
+    }
+
+    @Override
+    public void multiplyStat(String stat, double amount) {
+        switch (stat) {
+            case "goldMult" -> this.goldMult *= amount;
+            case "minAtkMult" -> this.minAtkMult *= amount;
+            case "maxAtkMult" -> this.maxAtkMult *= amount;
+            default -> super.multiplyStat(stat, amount);
+        }
+    }
+
+    @Override
+    public void updateStat(String stat, double amount) {
+        switch (stat) {
+            case "undos" -> this.num_undos += (int) amount;
+            default -> super.updateStat(stat, amount);
+        }
     }
 }

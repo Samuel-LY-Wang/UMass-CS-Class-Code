@@ -1,4 +1,4 @@
-package game.CombatEntities;
+package game.Combat;
 
 public class Entity {
     protected final String name;
@@ -82,7 +82,7 @@ public class Entity {
         this.speed = this.baseSpeed * this.speedMult * this.speedMod;
     }
 
-    public final void updateStat(String statName, double amount) {
+    public void updateStat(String statName, double amount) {
         switch (statName) {
             case "attack" -> this.baseATK += (int) amount;
             case "maxHealth" -> this.baseMaxHealth += (int) amount;
@@ -93,7 +93,7 @@ public class Entity {
         this.recalculateStats();
     }
 
-    public final void multiplyStat(String statName, double factor) {
+    public void multiplyStat(String statName, double factor) {
         switch (statName) {
             case "attack" -> this.atkMult *= factor;
             case "maxHealth" -> this.maxHealthMult *= factor;
@@ -139,6 +139,10 @@ public class Entity {
         return this.position;
     }
 
+    public final double distanceTo(Entity other) {
+        return Math.abs(this.position - other.position);
+    }
+
     public final boolean move(double distance) {
         // Returns: was move successful?
         if (!this.isAlive) {
@@ -150,6 +154,5 @@ public class Entity {
         this.position += distance;
         return true;
     }
-
 }
 

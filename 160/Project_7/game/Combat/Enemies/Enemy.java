@@ -1,6 +1,6 @@
-package game.CombatEntities.Enemies;
+package game.Combat.Enemies;
 
-import game.CombatEntities.Entity;
+import game.Combat.Entity;
 
 public class Enemy extends Entity {
 
