@@ -2,4 +2,5 @@
 Current progress:\
 Made Enemy and Player classes\
 Have Item class\
-Should have a way for the enemies to scale in difficulty over time
+Items should hopefully work\
+Should have a way for the enemies to scale in difficulty over time\

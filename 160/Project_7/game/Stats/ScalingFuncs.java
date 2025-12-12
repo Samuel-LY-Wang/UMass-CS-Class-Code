@@ -1,7 +1,7 @@
 package game.Stats;
 
 public class ScalingFuncs {
-    private static double getMarginalHPATKMMult(int wave) {
+    public static double getMarginalHPATKMMult(int wave) {
         // Returns the MARGINAL MULTIPLIER (health and attack only)
         if (wave < 0) {
             throw new IllegalArgumentException("Wave cannot be negative: " + wave);
@@ -24,15 +24,11 @@ public class ScalingFuncs {
     }
 
     public static double getHPATKMult(int wave) {
-        // Returns the CUMULATIVE MULTIPLIER (health and attack only)
-        if (wave < 0) {
-            throw new IllegalArgumentException("Wave cannot be negative: " + wave);
-        }
-        double mult = 1.0;
-        for (int i = 0; i <= wave; i++) {
-            mult *= getMarginalHPATKMMult(i);
-        }
-        return mult;
+        if (wave<6) return 1.0;
+        else if (wave < 11) return Math.pow(1.1, (wave-5));
+        else if (wave < 20) return Math.pow(1.1, 5)*Math.pow(1.2, (wave-10));
+        else if (wave < 40) return Math.pow(1.1, 5)*Math.pow(1.2, 10)*Math.pow(1.25, (wave-20));
+        else return Math.pow(1.1, 5)*Math.pow(1.2, 10)*Math.pow(1.25, 20)*Math.pow(1.33, (wave-40));
     }
 
     public static double getSpeedMult(int wave) {
@@ -44,7 +40,7 @@ public class ScalingFuncs {
             return 1.0;
         }
         else {
-            return 1.0+0.05*(wave-6); // constant 5% faster per wave
+            return 1.0+0.05*(wave-5); // constant 5% faster per wave
         }
     }
 
