@@ -1,4 +1,4 @@
-package game;
+package game.CombatEntities;
 
 public class Entity {
     protected final String name;
@@ -16,7 +16,7 @@ public class Entity {
     protected double defenseMult; // multiplier (items and upgrades)
     protected double defense;
 
-    protected int speedBase;
+    protected int baseSpeed;
     protected double speedMult; // multiplier (from items and upgrades)
     protected double speedMod; // multiplier (from buffs and debuffs)
     protected double speed;
@@ -25,7 +25,7 @@ public class Entity {
 
     protected boolean isAlive;
 
-    public Entity(String name, int maxHealth, int baseATK, int baseDefense, int speedBase, double position) {
+    public Entity(String name, int maxHealth, int baseATK, int baseDefense, int baseSpeed, double position) {
         this.name = name;
 
         this.baseMaxHealth = maxHealth;
@@ -41,10 +41,10 @@ public class Entity {
         this.defenseMult = 1.0;
         this.defense = baseDefense * this.defenseMult;
 
-        this.speedBase = speedBase;
+        this.baseSpeed = baseSpeed;
         this.speedMult = 1.0;
         this.speedMod = 1.0;
-        this.speed = speedBase * this.speedMult * this.speedMod;
+        this.speed = this.baseSpeed * this.speedMult * this.speedMod;
 
         this.position = position;
 
@@ -75,82 +75,38 @@ public class Entity {
         return this.speed;
     }
 
-    private void recalculateAttack() {
+    protected final void recalculateStats() {
         this.attackPower = this.baseATK * this.atkMult;
-    }
-
-    public final void updateBaseAttack(double amount) {
-        this.baseATK += amount;
-        this.recalculateAttack();
-    }
-
-    public final void multiplyAttack(double factor) {
-        this.atkMult *= factor;
-        this.recalculateAttack();
-    }
-
-    private void recalculateMaxHealth() {
         this.maxHealth = this.baseMaxHealth * this.maxHealthMult;
-    }
-
-    public final void updateBaseMaxHealth(double amount) {
-        this.baseMaxHealth += amount;
-        this.recalculateMaxHealth();
-        if (this.curHealth > this.maxHealth) {
-            this.curHealth = this.maxHealth;
-        }
-        this.isAlive = (this.curHealth > 0);
-    }
-
-    public final void multiplyMaxHealth(double factor) {
-        this.maxHealthMult *= factor;
-        this.recalculateMaxHealth();
-        if (this.curHealth > this.maxHealth) {
-            this.curHealth = this.maxHealth;
-        }
-        this.isAlive = (this.curHealth > 0);
-    }
-
-    private void recalculateDefense() {
         this.defense = this.baseDefense * this.defenseMult;
+        this.speed = this.baseSpeed * this.speedMult * this.speedMod;
     }
 
-    public final void updateBaseDefense(double amount) {
-        this.baseDefense += amount;
-        this.recalculateDefense();
+    public final void updateStat(String statName, double amount) {
+        switch (statName) {
+            case "attack" -> this.baseATK += (int) amount;
+            case "maxHealth" -> this.baseMaxHealth += (int) amount;
+            case "defense" -> this.baseDefense += (int) amount;
+            case "speed" -> this.baseSpeed += (int) amount;
+            default -> throw new IllegalArgumentException("Invalid stat name");
+        }
+        this.recalculateStats();
     }
 
-    public final void multiplyDefense(double factor) {
-        this.defenseMult *= factor;
-        this.recalculateDefense();
+    public final void multiplyStat(String statName, double factor) {
+        switch (statName) {
+            case "attack" -> this.atkMult *= factor;
+            case "maxHealth" -> this.maxHealthMult *= factor;
+            case "defense" -> this.defenseMult *= factor;
+            case "speed" -> this.speedMult *= factor;
+            default -> throw new IllegalArgumentException("Invalid stat name");
+        }
+        this.recalculateStats();
     }
 
-    public final void recalculateSpeed() {
-        this.speed = this.speedBase * this.speedMult * this.speedMod;
-    }
-
-    public final void updateBaseSpeed(int amount) {
-        // updates base speed
-        this.speedBase += amount;
-        this.recalculateSpeed();
-    }
-
-    public final void updateSpeedMult(double factor) {
-        // multiplies speed multiplier
-        this.speedMult = this.speedMult * factor;
-        this.recalculateSpeed();
-    }
-
-    public final void setSpeedMult(double newMult) {
-        // sets speed multiplier
-        this.speedMult = newMult;
-        this.recalculateSpeed();
-    }
-
-    public final void updateSpeedMod(double factor) {
-        // multiplies speed modifier
-        this.speedMod = this.speedMod * factor;
-        this.recalculateSpeed();
+    public final void setSpeedMod(double speedMod) {
+        this.speedMod = speedMod;
+        this.recalculateStats();
     }
 
     public final boolean isAlive() {
@@ -196,3 +152,4 @@ public class Entity {
     }
 
 }
+

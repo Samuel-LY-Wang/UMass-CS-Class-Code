@@ -3,7 +3,7 @@ public class GameState {
     protected int[] BeingsHealth;
     public GameState(CombatEntity[] b, int[] bHealth) {
         this.Beings = b;
-        this.BeingsHealth = bHealth;
+        this.BeingsHealth = bHealth.clone();
     }
 
     public CombatEntity getCE(int index) {

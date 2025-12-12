@@ -1,7 +1,7 @@
-package game;
+package game.Stats;
 
 public class ScalingFuncs {
-    private static double getOtherStatMult(int wave) {
+    private static double getMarginalHPATKMMult(int wave) {
         // Returns the MARGINAL MULTIPLIER (health and attack only)
         if (wave < 0) {
             throw new IllegalArgumentException("Wave cannot be negative: " + wave);
@@ -23,14 +23,14 @@ public class ScalingFuncs {
         }
     }
 
-    public static double getHPandATKmult(int wave) {
+    public static double getHPATKMult(int wave) {
         // Returns the CUMULATIVE MULTIPLIER (health and attack only)
         if (wave < 0) {
             throw new IllegalArgumentException("Wave cannot be negative: " + wave);
         }
         double mult = 1.0;
         for (int i = 0; i <= wave; i++) {
-            mult *= getOtherStatMult(i);
+            mult *= getMarginalHPATKMMult(i);
         }
         return mult;
     }
@@ -68,5 +68,29 @@ public class ScalingFuncs {
             totalDef += getMarginalDefMod(i, defScaleTimer, defScaleAmount);
         }
         return totalDef;
+    }
+
+    public static final double getScaledHP(int wave, String enemyType) {
+        int baseHP = EnemyStats.baseStats.get(enemyType)[0];
+        double mult = getHPATKMult(wave);
+        return baseHP * mult;
+    }
+
+    public static final double getScaledATK(int wave, String enemyType) {
+        int baseATK = EnemyStats.baseStats.get(enemyType)[1];
+        double mult = getHPATKMult(wave);
+        return baseATK * mult;
+    }
+
+    public static final double getScaledSpeed(int wave, String enemyType) {
+        int baseSpeed = EnemyStats.baseStats.get(enemyType)[3];
+        double mult = getSpeedMult(wave);
+        return baseSpeed * mult;
+    }
+
+    public static final double getScaledDef(int wave, String enemyType) {
+        int baseDef = EnemyStats.baseStats.get(enemyType)[2];
+        double mod = getDefMod(wave, EnemyStats.defScaleTimers.get(enemyType), EnemyStats.defScaleAmounts.get(enemyType));
+        return baseDef + mod; // DEFENSE IS ADDITIVE RATHER THAN MULTIPLICATIVE (balancing probably, as defense blocks attacks)
     }
 }

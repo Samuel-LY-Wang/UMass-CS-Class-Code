@@ -1,9 +1,10 @@
-package game;
+package game.Stats;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EnemyStats {
     public static final String[] enemyTypes = {"Weak", "Basic", "Speedy", "Ranged", "Large"};
+    public static final int numEnemyTypes = enemyTypes.length;
     public static final Map<String, Integer> enemyAmounts = new HashMap<>() {{
         put("Weak", 4);
         put("Basic", 2);

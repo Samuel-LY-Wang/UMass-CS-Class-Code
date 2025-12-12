@@ -1,8 +1,9 @@
-package game;
+package game.CombatEntities.Player;
 import java.util.Scanner;
 
 public class ActionMapper {
     public final String[] actions = {"move", "melee", "ranged", "fireball", "iceball", "poison", "heal", "undo", "retreat"};
+    public final int num_actions = actions.length;
     public final Scanner s;
     public final Player p;
     public ActionMapper(Scanner s, Player p) {

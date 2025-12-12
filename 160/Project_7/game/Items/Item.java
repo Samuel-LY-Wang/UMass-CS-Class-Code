@@ -1,4 +1,4 @@
-package game;
+package game.Items;
 
 public class Item {
     protected final int id;

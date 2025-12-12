@@ -1,4 +1,6 @@
-package game;
+package game.CombatEntities.Player;
+
+import game.CombatEntities.Entity;
 
 public abstract class Player extends Entity {
     private int num_undos;
