@@ -60,4 +60,5 @@ public final class PlayerStats {
         put("Rogue", 10.0);
         put("Merchant", 10.0);
     }}; // base ranged attack accuracy for each class
+    public static final int START_POS = 0;
 }

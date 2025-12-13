@@ -7,8 +7,8 @@ import game.Stats.OtherStats;
 public class RangedEnemy extends Enemy implements RangedEntity {
 
     protected RangedAttack rangedAttack;
-    public RangedEnemy(int wave, double position) {
-        super("Ranged", wave, position);
+    public RangedEnemy(String className, int wave, double position) {
+        super(className, wave, position);
         this.rangedAttack = new RangedAttack(OtherStats.BASE_RANGED_ACC);
     }
 

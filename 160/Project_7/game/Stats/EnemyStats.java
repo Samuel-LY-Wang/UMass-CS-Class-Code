@@ -8,13 +8,6 @@ public final class EnemyStats {
     }
     public static final String[] enemyTypes = {"Weak", "Basic", "Speedy", "Ranged", "Large"};
     public static final int numEnemyTypes = enemyTypes.length;
-    public static final Map<String, Integer> enemyAmounts = new HashMap<>() {{
-        put("Weak", 4);
-        put("Basic", 2);
-        put("Speedy", 1);
-        put("Ranged", 1);
-        put("Large", 1);
-    }}; // number of each enemy type that spawns per "group"
     public static final Map<String, int[]> baseStats = new HashMap<>() {{
         put("Weak", new int[]{10, 5, 0, 5});
         put("Basic", new int[]{40, 10, 0, 10});
@@ -43,4 +36,5 @@ public final class EnemyStats {
         put("Ranged", 0.5);
         put("Large", 1.0);
     }}; // defense scale amounts for each enemy type
+    public static final double STDEV_POS = 15.0; // standard deviation for enemy spawn positions
 }

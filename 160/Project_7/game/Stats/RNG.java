@@ -10,4 +10,7 @@ public class RNG {
     public static final double randomDoubleInRange(double min, double max) {
         return min + (rng.nextDouble() * (max - min));
     }
+    public static final double getRandPos(double mean, double stdev) {
+        return mean + (rng.nextGaussian() * stdev);
+    }
 }
