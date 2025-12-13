@@ -1,16 +1,24 @@
 package game.Combat.Attacks;
-import game.Combat.Entity;
+import game.Combat.Entities.Entity;
 import game.Stats.RNG;
 
 public class RangedAttack extends Attack {
-    protected double accuracy; // distance at which the attack has a 1/e chance of hitting (~37%)
+    protected double accuracy; // distance at which the attack has a 1/2 chance of hitting
+    public RangedAttack(double accuracy) {
+        super(Double.MAX_VALUE);
+        this.accuracy = accuracy;
+    }
     public RangedAttack(double damageMod, double accuracy) {
         super(Double.MAX_VALUE, damageMod);
         this.accuracy = accuracy;
     }
+    public RangedAttack(double damageMod, double accuracy, double minDamage, double maxDamage) {
+        super(Double.MAX_VALUE, damageMod, minDamage, maxDamage);
+        this.accuracy = accuracy;
+    }
 
     public double getSuccessRate(double dist) {
-        return Math.exp(-(Math.pow(dist/this.accuracy, 2))); // Gaussian success rate
+        return Math.exp(-(Math.pow(dist/this.accuracy, 2)) * Math.log(2)); // Gaussian success rate
     }
 
     public double getAccuracy() {
@@ -27,8 +35,7 @@ public class RangedAttack extends Attack {
         double successRate = getSuccessRate(dist);
         double rng_res = RNG.rng.nextDouble();
         if (rng_res < successRate) {
-            double damage = this.damageMod * source.getStat("attackPower");
-            target.takeDamage(damage);
+            this.successfulAttack(source, target);
             return true; // attack hit
         } else {
             return false; // attack missed

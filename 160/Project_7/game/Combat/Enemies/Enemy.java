@@ -1,17 +1,32 @@
 package game.Combat.Enemies;
 
-import game.Combat.Entity;
+import game.Combat.Entities.Entity;
+import game.Stats.EnemyStats;
+import game.Stats.ScalingFuncs;
 
 public class Enemy extends Entity {
 
     protected final String className;
-    public Enemy(int baseHealth, int baseAttack, int baseDefense, int baseSpeed, double position, String className) {
+    protected final int[] baseStats;
+    protected final int goldReward;
+    protected final int defScaleTimer;
+    protected final double defScaleAmount;
+    public Enemy(String className, int wave, double position) {
+        int[] baseStats = EnemyStats.baseStats.get(className);
         super("Enemy",
-              baseHealth,
-              baseAttack,
-              baseDefense,
-              baseSpeed,
+              baseStats[0],
+              baseStats[1],
+              baseStats[2],
+              baseStats[3],
               position);
+        this.baseStats = baseStats;
+        this.goldReward = EnemyStats.goldRewards.get(className);
+        this.defScaleTimer = EnemyStats.defScaleTimers.get(className);
+        this.defScaleAmount = EnemyStats.defScaleAmounts.get(className);
+        this.multiplyStat("maxHealth", ScalingFuncs.getHPATKMult(wave));
+        this.multiplyStat("attack", ScalingFuncs.getHPATKMult(wave));
+        this.updateStat("defense", ScalingFuncs.getDefMod(wave, defScaleTimer, defScaleAmount));
+        this.multiplyStat("speed", ScalingFuncs.getSpeedMult(wave));
         this.className = className;
     }
 

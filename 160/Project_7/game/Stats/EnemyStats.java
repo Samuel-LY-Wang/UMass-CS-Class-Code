@@ -2,7 +2,10 @@ package game.Stats;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EnemyStats {
+public final class EnemyStats {
+    private EnemyStats() {
+        throw new AssertionError("Class cannot be instantiated, instances prohibited.");
+    }
     public static final String[] enemyTypes = {"Weak", "Basic", "Speedy", "Ranged", "Large"};
     public static final int numEnemyTypes = enemyTypes.length;
     public static final Map<String, Integer> enemyAmounts = new HashMap<>() {{

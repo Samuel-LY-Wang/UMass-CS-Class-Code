@@ -1,7 +1,11 @@
 package game.Stats;
 
-public class ScalingFuncs {
-    public static double getMarginalHPATKMMult(int wave) {
+public final class ScalingFuncs {
+    private ScalingFuncs() {
+        throw new AssertionError("Class cannot be instantiated, instances prohibited.");
+    }
+
+    public static final double getMarginalHPATKMMult(int wave) {
         // Returns the MARGINAL MULTIPLIER (health and attack only)
         if (wave < 0) {
             throw new IllegalArgumentException("Wave cannot be negative: " + wave);
@@ -23,7 +27,7 @@ public class ScalingFuncs {
         }
     }
 
-    public static double getHPATKMult(int wave) {
+    public static final double getHPATKMult(int wave) {
         if (wave<6) return 1.0;
         else if (wave < 11) return Math.pow(1.1, (wave-5));
         else if (wave < 20) return Math.pow(1.1, 5)*Math.pow(1.2, (wave-10));
@@ -31,7 +35,7 @@ public class ScalingFuncs {
         else return Math.pow(1.1, 5)*Math.pow(1.2, 10)*Math.pow(1.25, 20)*Math.pow(1.33, (wave-40));
     }
 
-    public static double getSpeedMult(int wave) {
+    public static final double getSpeedMult(int wave) {
         // Returns the CUMULATIVE MULTIPLIER (speed only)
         if (wave < 0) {
             throw new IllegalArgumentException("Wave cannot be negative: " + wave);
@@ -54,7 +58,7 @@ public class ScalingFuncs {
         }
     }
 
-    public static double getDefMod(int wave, int defScaleTimer, double defScaleAmount) {
+    public static final double getDefMod(int wave, int defScaleTimer, double defScaleAmount) {
         // Returns the CUMULATIVE ADDITIVE modifier (defense only)
         if (wave < 0) {
             throw new IllegalArgumentException("Wave cannot be negative: " + wave);

@@ -1,26 +1,40 @@
 package game.Combat.Player;
-import game.Combat.Entity;
-import game.Combat.RangedEntity;
 import game.Combat.Attacks.RangedAttack;
-import game.Stats.OtherStats;
+import game.Combat.Entities.Entity;
+import game.Combat.Entities.RangedEntity;
+import game.Stats.PlayerStats;
 
-public abstract class Player extends Entity implements RangedEntity{
+public class Player extends Entity implements RangedEntity{
     protected final String className;
+    protected final int[] baseStats;
+    protected final double meleeModifier;
+    protected final double rangedModifier;
+    protected final boolean magicUser;
+    protected final double baseRangedAcc;
     protected int num_undos;
     protected int gold;
     protected double goldMult;
     protected double minAtkMult;
     protected double maxAtkMult;
     protected RangedAttack rangedAttack;
-    public Player(String className, String name, int maxHealth, int baseATK, int baseDefense, int speedBase, double position, int startingGold) {
-        super(name, maxHealth, baseATK, baseDefense, speedBase, position);
+
+    public Player(String className, String name, double position) {
+        int[] baseStats = PlayerStats.baseStats.get(className);
+        super(name, baseStats[0], baseStats[1], baseStats[2], baseStats[3], position);
         this.className = className;
+        this.baseStats = baseStats;
+        this.meleeModifier = PlayerStats.meleeAtkModifier.get(className);
+        this.rangedModifier = PlayerStats.rangedAtkModifier.get(className);
+        this.magicUser = PlayerStats.canUseMagic.get(className);
+        this.baseRangedAcc = PlayerStats.baseRangedAcc.get(className);
         this.num_undos = 0; // undos only given by items
         this.goldMult = 1.0; // Gold multiplier from items
-        this.gold = startingGold;
+        this.gold = baseStats[4];
         this.minAtkMult = 1.0; // Minimum attack multiplier from items
         this.maxAtkMult = 1.0; // Maximum attack multiplier from items
-        this.rangedAttack = new RangedAttack(1.0, OtherStats.BASE_RANGED_ACC);
+        this.basicAttack.setDamageMod(this.meleeModifier);
+        this.rangedAttack = new RangedAttack(this.baseRangedAcc);
+        this.rangedAttack.setDamageMod(this.rangedModifier);
     }
 
     public int getGold() {

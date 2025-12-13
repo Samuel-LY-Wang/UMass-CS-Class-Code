@@ -1,9 +1,15 @@
 package game.Combat.Attacks;
-import game.Combat.Entity;
+import game.Combat.Entities.Entity;
 
 public class MeleeAttack extends Attack {
+    public MeleeAttack(double range) {
+        super(range);
+    }
     public MeleeAttack(double range, double damageMod) {
         super(range, damageMod);
+    }
+    public MeleeAttack(double range, double damageMod, double minDamage, double maxDamage) {
+        super(range, damageMod, minDamage, maxDamage);
     }
 
     @Override
@@ -12,7 +18,7 @@ public class MeleeAttack extends Attack {
         if (source.distanceTo(target) > this.range) {
             return false;
         } else {
-            target.takeDamage(source.getStat("attackPower") * this.damageMod);
+            this.successfulAttack(source, target);
             return true;
         }
     }

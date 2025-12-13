@@ -2,7 +2,10 @@ package game.Stats;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerStats {
+public final class PlayerStats {
+    private PlayerStats() {
+        throw new AssertionError("Class cannot be instantiated, instances prohibited.");
+    }
     public static final String[] classNames = {
         "Human",
         "Wizard",
@@ -48,4 +51,13 @@ public class PlayerStats {
         put("Rogue", false);
         put("Merchant", false);
     }}; // melee attack damage modifier for each class
+    public static final Map<String, Double> baseRangedAcc = new HashMap<>() {{
+        put("Human", 10.0);
+        put("Wizard", 10.0);
+        put("Elf", 20.0);
+        put("Giant", 10.0);
+        put("Brawler", 10.0);
+        put("Rogue", 10.0);
+        put("Merchant", 10.0);
+    }}; // base ranged attack accuracy for each class
 }

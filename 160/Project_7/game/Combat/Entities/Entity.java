@@ -1,4 +1,4 @@
-package game.Combat;
+package game.Combat.Entities;
 import game.Combat.Attacks.MeleeAttack;
 import game.Stats.OtherStats;
 
@@ -54,7 +54,7 @@ public class Entity {
 
         this.isAlive = (this.curHealth > 0);
 
-        this.basicAttack = new MeleeAttack(OtherStats.BASE_MELEE_RANGE, 1.0);
+        this.basicAttack = new MeleeAttack(OtherStats.BASE_MELEE_RANGE);
     }
 
     public String getName() {

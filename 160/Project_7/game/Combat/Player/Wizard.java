@@ -1,29 +1,19 @@
 package game.Combat.Player;
 import game.Combat.Attacks.RangedAttack;
 import game.Combat.Attacks.SlowingAttack;
-import game.Combat.Entity;
+import game.Combat.Entities.Entity;
 import game.Stats.*;
 
 public class Wizard extends Player {
-    public static final String className = "Wizard";
-    public static final int[] baseStats = PlayerStats.baseStats.get(className);
-    public static final double meleeModifier = PlayerStats.meleeAtkModifier.get(className);
-    public static final double rangedModifier = PlayerStats.rangedAtkModifier.get(className);
-    public static final boolean magicUser = PlayerStats.canUseMagic.get(className);
     public final RangedAttack fireBall;
     public final SlowingAttack iceSpike;
     public Wizard(String name, double position) {
-        super(className, name, baseStats[0], baseStats[1], baseStats[2], baseStats[3], position, baseStats[4]);
-        this.rangedAttack.setDamageMod(rangedModifier);
-        this.basicAttack.setDamageMod(meleeModifier);
-        if (magicUser) {
-            this.fireBall = new RangedAttack(1.0, OtherStats.BASE_FIREBALL_ACC);
-            this.iceSpike = new SlowingAttack(1.0, OtherStats.BASE_ICE_RANGE, OtherStats.BASE_ICE_SLOW);
+        super("Wizard", name, position);
+        if (!this.magicUser) {
+            throw new IllegalArgumentException("Class " + className + " cannot be a MagicPlayer.");
         }
-        else {
-            this.fireBall = null;
-            this.iceSpike = null;
-        }
+        this.fireBall = new RangedAttack(OtherStats.BASE_FIREBALL_ACC);
+        this.iceSpike = new SlowingAttack(OtherStats.BASE_ICE_RANGE, OtherStats.BASE_ICE_SLOW);
     }
     protected boolean isMagicUser() {
         return magicUser;
