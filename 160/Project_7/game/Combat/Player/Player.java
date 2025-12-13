@@ -1,20 +1,26 @@
 package game.Combat.Player;
-
 import game.Combat.Entity;
+import game.Combat.RangedEntity;
+import game.Combat.Attacks.RangedAttack;
+import game.Stats.OtherStats;
 
-public class Player extends Entity {
+public abstract class Player extends Entity implements RangedEntity{
+    protected final String className;
     protected int num_undos;
     protected int gold;
     protected double goldMult;
     protected double minAtkMult;
     protected double maxAtkMult;
-    public Player(String name, int maxHealth, int baseATK, int baseDefense, int speedBase, double position, int startingGold) {
+    protected RangedAttack rangedAttack;
+    public Player(String className, String name, int maxHealth, int baseATK, int baseDefense, int speedBase, double position, int startingGold) {
         super(name, maxHealth, baseATK, baseDefense, speedBase, position);
+        this.className = className;
         this.num_undos = 0; // undos only given by items
         this.goldMult = 1.0; // Gold multiplier from items
         this.gold = startingGold;
         this.minAtkMult = 1.0; // Minimum attack multiplier from items
         this.maxAtkMult = 1.0; // Maximum attack multiplier from items
+        this.rangedAttack = new RangedAttack(1.0, OtherStats.BASE_RANGED_ACC);
     }
 
     public int getGold() {
@@ -71,5 +77,14 @@ public class Player extends Entity {
             case "undos" -> this.num_undos += (int) amount;
             default -> super.updateStat(stat, amount);
         }
+    }
+
+    @Override
+    public boolean rangedAttack(Entity target) {
+        return this.rangedAttack.apply(this, target);
+    }
+
+    public String getClassName() {
+        return this.className;
     }
 }

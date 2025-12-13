@@ -1,4 +1,6 @@
 package game.Combat;
+import game.Combat.Attacks.MeleeAttack;
+import game.Stats.OtherStats;
 
 public class Entity {
     protected final String name;
@@ -22,6 +24,8 @@ public class Entity {
     protected double speed;
 
     protected double position;
+
+    protected MeleeAttack basicAttack;
 
     protected boolean isAlive;
 
@@ -49,30 +53,25 @@ public class Entity {
         this.position = position;
 
         this.isAlive = (this.curHealth > 0);
+
+        this.basicAttack = new MeleeAttack(OtherStats.BASE_MELEE_RANGE, 1.0);
     }
 
-    public final String getName() {
+    public String getName() {
         return this.name;
     }
 
-    public final double getAttackPower() {
-        return this.attackPower;
-    }
-
-    public final double getCurHealth() {
-        return this.curHealth;
-    }
-
-    public final double getMaxHealth() {
-        return this.maxHealth;
-    }
-
-    public final double getDefense() {
-        return this.defense;
-    }
-
-    public final double getSpeed() {
-        return this.speed;
+    public double getStat(String statName) {
+        return switch (statName) {
+            case "name" -> throw new IllegalArgumentException("Please use .getName() to get the name!");
+            case "attackPower" -> this.attackPower;
+            case "maxHealth" -> this.maxHealth;
+            case "curHealth" -> this.curHealth;
+            case "defense" -> this.defense;
+            case "speed" -> this.speed;
+            case "position" -> this.position;
+            default -> throw new IllegalArgumentException("Invalid stat name");
+        };
     }
 
     protected final void recalculateStats() {
@@ -84,7 +83,7 @@ public class Entity {
 
     public void updateStat(String statName, double amount) {
         switch (statName) {
-            case "attack" -> this.baseATK += (int) amount;
+            case "attackPower" -> this.baseATK += (int) amount;
             case "maxHealth" -> this.baseMaxHealth += (int) amount;
             case "defense" -> this.baseDefense += (int) amount;
             case "speed" -> this.baseSpeed += (int) amount;
@@ -95,7 +94,7 @@ public class Entity {
 
     public void multiplyStat(String statName, double factor) {
         switch (statName) {
-            case "attack" -> this.atkMult *= factor;
+            case "attackPower" -> this.atkMult *= factor;
             case "maxHealth" -> this.maxHealthMult *= factor;
             case "defense" -> this.defenseMult *= factor;
             case "speed" -> this.speedMult *= factor;
@@ -135,10 +134,6 @@ public class Entity {
         return prevHealth - this.curHealth;
     }
 
-    public final double getPosition() {
-        return this.position;
-    }
-
     public final double distanceTo(Entity other) {
         return Math.abs(this.position - other.position);
     }
@@ -154,5 +149,8 @@ public class Entity {
         this.position += distance;
         return true;
     }
-}
 
+    public boolean meleeAttack(Entity target) {
+        return this.basicAttack.apply(this, target);
+    }
+}

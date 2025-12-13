@@ -1,16 +1,12 @@
 package game.Combat.Attacks;
 import game.Combat.Entity;
-import java.util.Random;
+import game.Stats.RNG;
 
 public class RangedAttack extends Attack {
     protected double accuracy; // distance at which the attack has a 1/e chance of hitting (~37%)
-    protected Random rng;
     public RangedAttack(double damageMod, double accuracy) {
-        // this.range is unused, as ranged attacks have **theoretically** infinite range
-        this.range = Double.MAX_VALUE;
-        this.damageMod = damageMod;
+        super(Double.MAX_VALUE, damageMod);
         this.accuracy = accuracy;
-        this.rng = new Random();
     }
 
     public double getSuccessRate(double dist) {
@@ -29,9 +25,9 @@ public class RangedAttack extends Attack {
     public boolean apply(Entity source, Entity target) {
         double dist = source.distanceTo(target);
         double successRate = getSuccessRate(dist);
-        double rng_res = this.rng.nextDouble();
+        double rng_res = RNG.rng.nextDouble();
         if (rng_res < successRate) {
-            double damage = this.damageMod * source.getAttackPower();
+            double damage = this.damageMod * source.getStat("attackPower");
             target.takeDamage(damage);
             return true; // attack hit
         } else {

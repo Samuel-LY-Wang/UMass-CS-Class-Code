@@ -1,0 +1,51 @@
+package game.Stats;
+import java.util.HashMap;
+import java.util.Map;
+
+public class PlayerStats {
+    public static final String[] classNames = {
+        "Human",
+        "Wizard",
+        "Elf",
+        "Giant",
+        "Brawler",
+        "Rogue",
+        "Merchant"
+    };
+    public static final Map<String, int[]> baseStats = new HashMap<>() {{
+        put("Human", new int[]{125, 12, 0, 30, 10});
+        put("Wizard", new int[]{100, 10, 0, 25, 10});
+        put("Elf", new int[]{80, 10, 0, 25, 10});
+        put("Giant", new int[]{200, 20, 2, 5, 10});
+        put("Brawler", new int[]{100, 10, 0, 25, 10});
+        put("Rogue", new int[]{100, 8, 0, 45, 10});
+        put("Merchant", new int[]{100, 10, 0, 25, 30});
+    }}; // maxHealth, attack, defense, speed, starting gold (in that order)
+    public static final Map<String, Double> meleeAtkModifier = new HashMap<>() {{
+        put("Human", 1.0);
+        put("Wizard", 1.0);
+        put("Elf", 1.0);
+        put("Giant", 1.0);
+        put("Brawler", 1.5);
+        put("Rogue", 1.0);
+        put("Merchant", 1.0);
+    }}; // melee attack damage modifier for each class
+    public static final Map<String, Double> rangedAtkModifier = new HashMap<>() {{
+        put("Human", 1.0);
+        put("Wizard", 1.0);
+        put("Elf", 1.5);
+        put("Giant", 1.0);
+        put("Brawler", 1.0);
+        put("Rogue", 1.0);
+        put("Merchant", 1.0);
+    }}; // melee attack damage modifier for each class
+    public static final Map<String, Boolean> canUseMagic = new HashMap<>() {{
+        put("Human", false);
+        put("Wizard", true);
+        put("Elf", false);
+        put("Giant", false);
+        put("Brawler", false);
+        put("Rogue", false);
+        put("Merchant", false);
+    }}; // melee attack damage modifier for each class
+}

@@ -28,7 +28,7 @@ public class HealItem extends Item {
         if (this.healAmount > 0) {
             player.Heal(this.healAmount);
         } else if (this.healPercent > 0.0) {
-            player.Heal(player.getMaxHealth() * this.healPercent);
+            player.Heal(player.getStat("maxHealth") * this.healPercent);
         }
     }
 }

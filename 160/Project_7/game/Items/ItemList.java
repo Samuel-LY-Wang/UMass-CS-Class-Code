@@ -108,6 +108,13 @@ public class ItemList {
                 new MultiplyStat("maxAtkMult", 1.25)
             }
         , 10),
+
+        new StatBuffItem(31, "d12", "Attacks become less predictable",
+            20, new StatModifier[] {
+                new MultiplyStat("minAtkMult", 0.75),
+                new MultiplyStat("maxAtkMult", 1.5)
+            }
+        , 10),
         
         // END OF BASIC ITEMS, BEGINNING OF TRADEOFF ITEMS
 
@@ -221,4 +228,5 @@ public class ItemList {
     public static final int itemCount = items.length; // Stores the total number of items in the game
 
     public static final int itemFrequencySum = itemFrequencies.values().stream().mapToInt(Integer::intValue).sum(); // Stores the sum of all item frequencies (used for normalization)
+
 }

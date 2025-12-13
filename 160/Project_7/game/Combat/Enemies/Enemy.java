@@ -4,8 +4,8 @@ import game.Combat.Entity;
 
 public class Enemy extends Entity {
 
-    private final String className;
-    public Enemy(int wave, int baseHealth, int baseAttack, int baseDefense, int baseSpeed, double position, String className) {
+    protected final String className;
+    public Enemy(int baseHealth, int baseAttack, int baseDefense, int baseSpeed, double position, String className) {
         super("Enemy",
               baseHealth,
               baseAttack,
