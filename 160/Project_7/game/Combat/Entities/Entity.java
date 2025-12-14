@@ -112,6 +112,10 @@ public class Entity {
         return this.isAlive;
     }
 
+    public final void setAliveness(boolean status) {
+        this.isAlive = status;
+    }
+
     public final double Heal(double amount) {
         // Returns the amount healed
         double prevHealth = this.curHealth;
@@ -119,6 +123,7 @@ public class Entity {
         if (this.curHealth > this.maxHealth) {
             this.curHealth = this.maxHealth;
         }
+        this.isAlive = (this.curHealth > 0);
         return this.curHealth - prevHealth;
     }
 

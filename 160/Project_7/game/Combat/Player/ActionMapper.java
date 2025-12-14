@@ -1,23 +1,109 @@
 package game.Combat.Player;
-import java.util.Scanner;
+import game.Combat.Entities.Entity;
+import game.Combat.Player.Player;
+import game.Stats.PlayerStats;
+import java.util.ArrayList;
 
 public class ActionMapper {
-    public final String[] actions = {"move", "melee", "ranged", "fireball", "iceball", "poison", "heal", "undo", "retreat"};
+    public final String[] actions = {"move", "melee", "ranged", "fireball", "ice spike", "heal", "undo", "retreat", "purchase"};
+    public static final boolean[] isCombatAction = {true, true, true, true, true, true, true, true, false};
+    public boolean[] isValid = new boolean[actions.length];
     public final int num_actions = actions.length;
-    public final Scanner s;
     public final Player p;
-    public ActionMapper(Scanner s, Player p) {
-        this.s = s;
+    public ActionMapper(Player p) {
         this.p = p;
+        for (int i=0; i<num_actions; i++) {
+            isValid[i] = true;
+        }
+        if (!p.isMagicUser()) {
+            isValid[3] = false; // fireball
+            isValid[4] = false; // ice spike
+        }
     }
 
-    public int getAction() {
-        String in = s.nextLine().toLowerCase().trim();
+    public void updateValidActions(boolean isInShop) {
+        if (isInShop) {
+            for (int i = 0; i < num_actions; i++) {
+                this.isValid[i] = !ActionMapper.isCombatAction[i];
+            }
+            return;
+        }
+        // if we're not in Shop
+        this.isValid = ActionMapper.isCombatAction.clone();
+        if (!p.isMagicUser()) {
+            this.isValid[3] = false; // fireball
+            this.isValid[4] = false; // ice spike
+        }
+        this.isValid[6] = (p.getNumUndos() > 0); // undo
+    }
+
+    public String[] validActions() {
+        ArrayList<String> validList = new ArrayList<>();
+        for (int i = 0; i < actions.length; i++) {
+            if (isValid[i]) {
+                validList.add(actions[i]);
+            }
+        }
+        return validList.toArray(new String[validList.size()]);
+    }
+
+    public int getAction(String in) {
+        in = in.toLowerCase().trim();
         for (int i = 0; i < actions.length; i++) {
             if (in.equals(actions[i])) {
                 return i;
             }
         }
         return -1; // Return -1 if no valid action is found
+    }
+
+    public boolean isAttack(int actionIndex) {
+        return actionIndex == 1 || actionIndex == 2 || actionIndex == 3 || actionIndex == 4;
+    }
+
+    public boolean isMove(int actionIndex) {
+        return actionIndex == 0;
+    }
+
+    public boolean isHeal(int actionIndex) {
+        return actionIndex == 5;
+    }
+
+    public boolean isMagic(int actionIndex) {
+        return actionIndex == 3 || actionIndex == 4;
+    }
+
+    public boolean takeAction(int actionIndex, Entity target, double moveDistance) {
+        // ALWAYS RETURNS: is action successful?
+        if (target == null && isAttack(actionIndex)) {
+            return false; // Cannot attack if no target is provided
+        }
+        if (!this.isValid[actionIndex]) {
+            return false; // Action is not valid
+        }
+        switch (actionIndex) {
+            case 0 -> {return p.move(moveDistance);}
+            case 1 -> {return p.meleeAttack(target);}
+            case 2 -> {return p.rangedAttack(target);}
+            case 3 -> {
+                if (p instanceof Wizard w) {
+                    return w.fireBall(target);
+                }
+                return false;
+            }
+            case 4 -> {
+                if (p instanceof Wizard w) {
+                    return w.iceSpike(target);
+                }
+                return false;
+            }
+            case 5 -> {
+                p.Heal(PlayerStats.BASE_HEAL_AMOUNT);
+                return true;
+            }
+            case 6 -> {return p.Undo();}
+            case 7 -> {p.retreat(); return true;}
+            default -> {return false;}
+        }
     }
 }

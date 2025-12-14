@@ -4,6 +4,9 @@ import game.Stats.RNG;
 
 public class EnemyController {
     public static void move(Enemy e, Player p) {
+        if (!e.isAlive() || !p.isAlive()) {
+            return;
+        }
         // Simple movement logic: Move enemy random amount between current position and closest it can get to player
         double distance = p.getStat("position") - e.getStat("position");
         if (distance == 0) {

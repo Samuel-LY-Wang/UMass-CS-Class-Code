@@ -37,6 +37,10 @@ public class Player extends Entity implements RangedEntity{
         this.rangedAttack.setDamageMod(this.rangedModifier);
     }
 
+    public void retreat() {
+        this.isAlive = false; // Mark player as dead to retreat and immediately end the game
+    }
+
     public int getGold() {
         return this.gold;
     }
@@ -72,7 +76,12 @@ public class Player extends Entity implements RangedEntity{
             return false;
         }
         this.num_undos -= 1;
+        // HandleUndo class handles the process of rolling back positions and states
         return true;
+    }
+
+    public boolean isMagicUser() {
+        return this.magicUser;
     }
 
     @Override
@@ -100,5 +109,13 @@ public class Player extends Entity implements RangedEntity{
 
     public String getClassName() {
         return this.className;
+    }
+
+    @Override
+    public double getStat(String statName) {
+        return switch (statName) {
+            case "className" -> throw new IllegalArgumentException("className is not a numeric stat. Use getClassName() instead.");
+            default -> super.getStat(statName);
+        };
     }
 }

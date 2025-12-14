@@ -34,4 +34,13 @@ public class Enemy extends Entity {
         return this.className;
     }
 
+    @Override
+    public double getStat(String statName) {
+        return switch (statName) {
+            case "className" -> throw new IllegalArgumentException("className is not a numeric stat. Use getClassName() instead.");
+            case "speedMod" -> this.speedMod;
+            default -> super.getStat(statName);
+        };
+    }
+
 }

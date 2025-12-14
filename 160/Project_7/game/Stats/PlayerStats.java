@@ -61,4 +61,5 @@ public final class PlayerStats {
         put("Merchant", 10.0);
     }}; // base ranged attack accuracy for each class
     public static final int START_POS = 0;
+    public static final int BASE_HEAL_AMOUNT = 20;
 }

@@ -15,9 +15,6 @@ public class Wizard extends Player {
         this.fireBall = new RangedAttack(OtherStats.BASE_FIREBALL_ACC);
         this.iceSpike = new SlowingAttack(OtherStats.BASE_ICE_RANGE, OtherStats.BASE_ICE_SLOW);
     }
-    protected boolean isMagicUser() {
-        return magicUser;
-    }
     public boolean fireBall(Entity target) {
         if (!isMagicUser()) {
             return false;

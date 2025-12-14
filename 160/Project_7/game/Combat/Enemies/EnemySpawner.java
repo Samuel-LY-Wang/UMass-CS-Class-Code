@@ -1,19 +1,20 @@
 package game.Combat.Enemies;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
 import game.Stats.EnemyStats;
 import game.Stats.RNG;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EnemySpawner {
-    public static final Map<String, Integer> enemiesPerGroup = new HashMap<>() {{
+    public static final Map<String, Integer> Groups = new HashMap<>() {{
         put("Basic", 2);
         put("Weak", 5);
         put("Speedy", 1);
         put("Ranged", 1);
         put("Large", 1);
     }};
-    public static final int numGroupTypes = enemiesPerGroup.size();
+    public static final int numGroupTypes = Groups.size();
     public static Enemy[] spawnEnemyGroup(String enemyType, int count, int wave, double meanPos) {
         Enemy[] enemies = new Enemy[count];
         for (int i = 0; i < count; i++) {
@@ -36,13 +37,11 @@ public class EnemySpawner {
         for (int i=0; i < numGroups; i++) {
             double groupMeanPos = RNG.randomDoubleInRange(-50.0, 50.0); // clusters spawn somewhere between -50 and 50
             int groupToSpawn = RNG.rng.nextInt(numGroupTypes);;
-            String enemyType = (String) enemiesPerGroup.keySet().toArray()[groupToSpawn];
-            int count = enemiesPerGroup.get(enemyType);
+            String enemyType = (String) Groups.keySet().toArray()[groupToSpawn];
+            int count = Groups.get(enemyType);
             Enemy[] newEnemies = spawnEnemyGroup(enemyType, count, wave, groupMeanPos);
-            for (Enemy e : newEnemies) {
-                enemyList.add(e);
-            }
+            Collections.addAll(enemyList, newEnemies);
         }
-        return enemyList.toArray(new Enemy[0]);
+        return enemyList.toArray(new Enemy[enemyList.size()]);
     }
 }
