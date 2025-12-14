@@ -218,8 +218,8 @@ public class Main {
                     }
                 }
             }
-            // Game over message
-            System.out.println("Game over. You reached wave " + wave + ".");
         }
+        // Game over message
+        System.out.println("Game over. You reached wave " + wave + ".");
     }
 }
