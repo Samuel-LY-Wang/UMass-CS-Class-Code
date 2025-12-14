@@ -3,6 +3,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class ItemList {
+    private ItemList() {throw new AssertionError("Class cannot be instantiated, instances prohibited.");} // Prevent instantiation
     public static final Item[] items = {
 
         // BASIC ITEMS

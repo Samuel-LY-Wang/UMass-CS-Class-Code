@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EnemySpawner {
+    private EnemySpawner() {throw new AssertionError("Class cannot be instantiated, instances prohibited.");} // Prevent instantiation
     public static final Map<String, Integer> Groups = new HashMap<>() {{
         put("Basic", 2);
         put("Weak", 5);
