@@ -12,11 +12,8 @@ public class StatBuffItem extends Item {
         this.numBuffs = mods.length;
     }
 
-    public boolean canBePurchased (int cur_gold) {
-        return cur_gold >= this.price;
-    }
-
-    public void applyBuffs (Player c) {
+    @Override
+    public void apply (Player c) {
         for (int i = 0; i < this.numBuffs; i++) {
             this.mods[i].applyModifier(c);
         }

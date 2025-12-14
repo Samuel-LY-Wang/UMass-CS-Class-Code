@@ -29,7 +29,7 @@ public class GameState {
             }
             this.playerPositions[i] = p.getStat("position");
             this.playerAliveStatus[i] = p.isAlive();
-            this.playerHealth[i] = p.getStat("health");
+            this.playerHealth[i] = p.getStat("curHealth");
         }
         for (int j = 0; j < enemies.length; j++) {
             Enemy e = enemies[j];
@@ -38,7 +38,7 @@ public class GameState {
             }
             this.enemyPositions[j] = e.getStat("position");
             this.enemyAliveStatus[j] = e.isAlive();
-            this.enemyHealth[j] = e.getStat("health");
+            this.enemyHealth[j] = e.getStat("curHealth");
             this.enemySpeedMod[j] = e.getStat("speedMod");
         }
     }

@@ -15,6 +15,15 @@ public final class PlayerStats {
         "Rogue",
         "Merchant"
     };
+    public static final Map<String, String> classDescriptions = new HashMap<>() {{
+        put("Human", "Balanced stats across the board.");
+        put("Wizard", "Gain access to powerful magic attacks.");
+        put("Elf", "Ranged attacks are more accurate, but lower health.");
+        put("Giant", "High health and defense but low speed.");
+        put("Brawler", "Melee attacks deal more damage.");
+        put("Rogue", "Move very quickly, but hit less hard.");
+        put("Merchant", "Start the game with extra gold for the shop.");
+    }}; // descriptions for each class
     public static final Map<String, int[]> baseStats = new HashMap<>() {{
         put("Human", new int[]{125, 12, 0, 30, 10});
         put("Wizard", new int[]{100, 10, 0, 25, 10});

@@ -1,12 +1,12 @@
 package game.Combat.Player;
 import game.Combat.Entities.Entity;
-import game.Combat.Player.Player;
 import game.Stats.PlayerStats;
 import java.util.ArrayList;
 
 public class ActionMapper {
-    public final String[] actions = {"move", "melee", "ranged", "fireball", "ice spike", "heal", "undo", "retreat", "purchase"};
-    public static final boolean[] isCombatAction = {true, true, true, true, true, true, true, true, false};
+    public static final String[] actions = {"move", "melee", "ranged", "fireball", "ice spike", "heal", "undo", "retreat"};
+    public static final boolean[] isCombatAction = {true, true, true, true, true, true, true, true};
+    public static final boolean[] requiresExtraInfo = {true, true, true, true, true, false, false, false};
     public boolean[] isValid = new boolean[actions.length];
     public final int num_actions = actions.length;
     public final Player p;
@@ -57,26 +57,38 @@ public class ActionMapper {
         return -1; // Return -1 if no valid action is found
     }
 
-    public boolean isAttack(int actionIndex) {
+    public static boolean isAttack(int actionIndex) {
         return actionIndex == 1 || actionIndex == 2 || actionIndex == 3 || actionIndex == 4;
     }
 
-    public boolean isMove(int actionIndex) {
+    public static boolean isMove(int actionIndex) {
         return actionIndex == 0;
     }
 
-    public boolean isHeal(int actionIndex) {
+    public static boolean isHeal(int actionIndex) {
         return actionIndex == 5;
     }
 
-    public boolean isMagic(int actionIndex) {
+    public static boolean isMagic(int actionIndex) {
         return actionIndex == 3 || actionIndex == 4;
+    }
+
+    public boolean takeAction(int actionIndex) {
+        return takeAction(actionIndex, null, 0);
+    }
+
+    public boolean takeAction(int actionIndex, Entity target) {
+        return takeAction(actionIndex, target, 0);
+    }
+
+    public boolean takeAction(int actionIndex, double moveDistance) {
+        return takeAction(actionIndex, null, moveDistance);
     }
 
     public boolean takeAction(int actionIndex, Entity target, double moveDistance) {
         // ALWAYS RETURNS: is action successful?
         if (target == null && isAttack(actionIndex)) {
-            return false; // Cannot attack if no target is provided
+            throw new IllegalArgumentException("Attacks must have a valid target!");
         }
         if (!this.isValid[actionIndex]) {
             return false; // Action is not valid

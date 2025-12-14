@@ -41,18 +41,6 @@ public class Player extends Entity implements RangedEntity{
         this.isAlive = false; // Mark player as dead to retreat and immediately end the game
     }
 
-    public int getGold() {
-        return this.gold;
-    }
-
-    public void addGold(int amount) {
-        this.gold += amount;
-    }
-
-    public void updateGoldMult(double amount) {
-        this.goldMult *= amount;
-    }
-
     public boolean spendGold(int amount) {
         // Returns: Did you spend the gold successfully?
         if (amount > this.gold) {
@@ -98,6 +86,7 @@ public class Player extends Entity implements RangedEntity{
     public void updateStat(String stat, double amount) {
         switch (stat) {
             case "undos" -> this.num_undos += (int) amount;
+            case "gold" -> this.gold += (int) amount;
             default -> super.updateStat(stat, amount);
         }
     }
@@ -115,6 +104,7 @@ public class Player extends Entity implements RangedEntity{
     public double getStat(String statName) {
         return switch (statName) {
             case "className" -> throw new IllegalArgumentException("className is not a numeric stat. Use getClassName() instead.");
+            case "gold" -> this.gold;
             default -> super.getStat(statName);
         };
     }

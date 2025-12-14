@@ -23,4 +23,27 @@ public class EnemyController {
             e.move(moveAmount);
         }
     }
+    public static boolean meleeAttack(Enemy e, Player p) {
+        if (!e.isAlive() || !p.isAlive()) {
+            return false;
+        }
+        return e.meleeAttack(p);
+    }
+    public static boolean rangedAttack(RangedEnemy e, Player p) {
+        if (!e.isAlive() || !p.isAlive()) {
+            return false;
+        }
+        return e.rangedAttack(p);
+    }
+    public static void enemyAction(Enemy e, Player p) {
+        if (!e.isAlive() || !p.isAlive()) {
+            return;
+        }
+        move(e,p); // ALWAYS move first
+        // melee attack if in range, ranged enemies will ranged attack if melee unavailable
+        boolean inRange = meleeAttack(e, p);
+        if (!inRange && e instanceof RangedEnemy re) {
+            rangedAttack(re, p);
+        }
+    }
 }

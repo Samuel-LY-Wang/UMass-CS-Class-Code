@@ -13,7 +13,7 @@ public class Enemy extends Entity {
     protected final double defScaleAmount;
     public Enemy(String className, int wave, double position) {
         int[] baseStats = EnemyStats.baseStats.get(className);
-        super("Enemy",
+        super(className + " Enemy",
               baseStats[0],
               baseStats[1],
               baseStats[2],
@@ -24,7 +24,7 @@ public class Enemy extends Entity {
         this.defScaleTimer = EnemyStats.defScaleTimers.get(className);
         this.defScaleAmount = EnemyStats.defScaleAmounts.get(className);
         this.multiplyStat("maxHealth", ScalingFuncs.getHPATKMult(wave));
-        this.multiplyStat("attack", ScalingFuncs.getHPATKMult(wave));
+        this.multiplyStat("attackPower", ScalingFuncs.getHPATKMult(wave));
         this.updateStat("defense", ScalingFuncs.getDefMod(wave, defScaleTimer, defScaleAmount));
         this.multiplyStat("speed", ScalingFuncs.getSpeedMult(wave));
         this.className = className;

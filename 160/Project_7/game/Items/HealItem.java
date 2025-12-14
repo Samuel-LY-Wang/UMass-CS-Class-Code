@@ -17,14 +17,15 @@ public class HealItem extends Item {
     }
 
     public int getHealAmount() {
-        return healAmount;
+        return this.healAmount;
     }
 
     public double getHealPercent() {
-        return healPercent;
+        return this.healPercent;
     }
     
-    public void use(Player player) {
+    @Override
+    public void apply(Player player) {
         if (this.healAmount > 0) {
             player.Heal(this.healAmount);
         } else if (this.healPercent > 0.0) {

@@ -1,4 +1,5 @@
 package game.Items;
+import game.Combat.Player.Player;
 
 public class Item {
     protected final int id;
@@ -13,4 +14,14 @@ public class Item {
         this.price = price;
         this.frequency = frequency;
     }
+    public int getPrice() {
+        return this.price;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public String getDescription() {
+        return this.description;
+    }
+    public void apply(Player p) {} // should be overridden
 }
