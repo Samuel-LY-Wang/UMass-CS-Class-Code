@@ -1,6 +1,7 @@
 package game.Combat.Enemies;
 
 import game.Combat.Entities.Entity;
+import game.Combat.Player.Player;
 import game.Stats.EnemyStats;
 import game.Stats.ScalingFuncs;
 
@@ -41,6 +42,10 @@ public class Enemy extends Entity {
             case "speedMod" -> this.speedMod;
             default -> super.getStat(statName);
         };
+    }
+
+    public void giveGoldReward(Player player) {
+        player.giveGoldReward(this.goldReward);
     }
 
 }

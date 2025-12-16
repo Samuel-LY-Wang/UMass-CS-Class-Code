@@ -50,6 +50,11 @@ public class Player extends Entity implements RangedEntity{
         return true;
     }
 
+    public void giveGoldReward(int baseAmount) {
+        int totalAmount = (int) (baseAmount * this.goldMult);
+        this.gold += totalAmount;
+    }
+
     public void giveUndos(int amount) {
         this.num_undos += amount;
     }
@@ -86,7 +91,6 @@ public class Player extends Entity implements RangedEntity{
     public void updateStat(String stat, double amount) {
         switch (stat) {
             case "undos" -> this.num_undos += (int) amount;
-            case "gold" -> this.gold += (int) amount;
             default -> super.updateStat(stat, amount);
         }
     }

@@ -1,121 +1,115 @@
 package game.Combat.Player;
-import game.Combat.Entities.Entity;
+import game.Combat.Enemies.Enemy;
 import game.Stats.PlayerStats;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
 
-public class ActionMapper {
+public final class ActionMapper {
     public static final String[] actions = {"move", "melee", "ranged", "fireball", "ice spike", "heal", "undo", "retreat"};
-    public static final boolean[] isCombatAction = {true, true, true, true, true, true, true, true};
-    public static final boolean[] requiresExtraInfo = {true, true, true, true, true, false, false, false};
-    public boolean[] isValid = new boolean[actions.length];
+    private static final Map<String, String[]> actionExtraInfoPrompts = new HashMap<>() {{
+        put("move", new String[]{"Enter distance to move (positive for forward, negative for backward):"});
+        put("melee", new String[]{"Enter the target:"});
+        put("ranged", new String[]{"Enter the target:"});
+        put("fireball", new String[]{"Enter the target:"});
+        put("ice spike", new String[]{"Enter the target:"});
+    }};
+    private static final Map<String, Set<String>> actionCharacteristics = new HashMap<>() {{
+        put("move", Set.of("move"));
+        put("melee", Set.of("attack"));
+        put("ranged", Set.of("attack"));
+        put("fireball", Set.of("attack", "magic"));
+        put("ice spike", Set.of("attack", "magic"));
+        put("heal", Set.of("healing"));
+        put("undo", Set.of());
+        put("retreat", Set.of());
+    }};
+    private final Map<String, Boolean> isValid = new HashMap<>() {{
+        for (String action : actions) {
+            put(action, true);
+        }
+    }};
     public final int num_actions = actions.length;
     public final Player p;
     public ActionMapper(Player p) {
         this.p = p;
-        for (int i=0; i<num_actions; i++) {
-            isValid[i] = true;
-        }
         if (!p.isMagicUser()) {
-            isValid[3] = false; // fireball
-            isValid[4] = false; // ice spike
+            this.isValid.put("fireball", false);
+            this.isValid.put("ice spike", false);
         }
+        this.isValid.put("undo", (p.getNumUndos() > 0));
     }
 
     public void updateValidActions(boolean isInShop) {
-        if (isInShop) {
-            for (int i = 0; i < num_actions; i++) {
-                this.isValid[i] = !ActionMapper.isCombatAction[i];
-            }
-            return;
-        }
-        // if we're not in Shop
-        this.isValid = ActionMapper.isCombatAction.clone();
-        if (!p.isMagicUser()) {
-            this.isValid[3] = false; // fireball
-            this.isValid[4] = false; // ice spike
-        }
-        this.isValid[6] = (p.getNumUndos() > 0); // undo
+        this.isValid.put("undo", (p.getNumUndos() > 0)); // undo
     }
 
     public String[] validActions() {
         ArrayList<String> validList = new ArrayList<>();
-        for (int i = 0; i < actions.length; i++) {
-            if (isValid[i]) {
-                validList.add(actions[i]);
+        for (String action : actions) {
+            if (isValid.get(action)) {
+                validList.add(action);
             }
         }
         return validList.toArray(new String[validList.size()]);
     }
 
-    public int getAction(String in) {
-        in = in.toLowerCase().trim();
-        for (int i = 0; i < actions.length; i++) {
-            if (in.equals(actions[i])) {
-                return i;
-            }
-        }
-        return -1; // Return -1 if no valid action is found
+    public static boolean isAttack(String action) {
+        return actionCharacteristics.getOrDefault(action, Set.of()).contains("attack");
     }
 
-    public static boolean isAttack(int actionIndex) {
-        return actionIndex == 1 || actionIndex == 2 || actionIndex == 3 || actionIndex == 4;
+    public static boolean isMove(String action) {
+        return actionCharacteristics.getOrDefault(action, Set.of()).contains("move");
     }
 
-    public static boolean isMove(int actionIndex) {
-        return actionIndex == 0;
+    public static boolean isHeal(String action) {
+        return actionCharacteristics.getOrDefault(action, Set.of()).contains("healing");
     }
 
-    public static boolean isHeal(int actionIndex) {
-        return actionIndex == 5;
+    public static boolean isMagic(String action) {
+        return actionCharacteristics.getOrDefault(action, Set.of()).contains("magic");
     }
 
-    public static boolean isMagic(int actionIndex) {
-        return actionIndex == 3 || actionIndex == 4;
-    }
-
-    public boolean takeAction(int actionIndex) {
-        return takeAction(actionIndex, null, 0);
-    }
-
-    public boolean takeAction(int actionIndex, Entity target) {
-        return takeAction(actionIndex, target, 0);
-    }
-
-    public boolean takeAction(int actionIndex, double moveDistance) {
-        return takeAction(actionIndex, null, moveDistance);
-    }
-
-    public boolean takeAction(int actionIndex, Entity target, double moveDistance) {
+    public boolean takeAction(String action, Enemy target, double moveDistance) {
         // ALWAYS RETURNS: is action successful?
-        if (target == null && isAttack(actionIndex)) {
+        if (target == null && isAttack(action)) {
             throw new IllegalArgumentException("Attacks must have a valid target!");
         }
-        if (!this.isValid[actionIndex]) {
+        if (!this.isValid.get(action)) {
             return false; // Action is not valid
         }
-        switch (actionIndex) {
-            case 0 -> {return p.move(moveDistance);}
-            case 1 -> {return p.meleeAttack(target);}
-            case 2 -> {return p.rangedAttack(target);}
-            case 3 -> {
+        switch (action) {
+            case "move" -> {return p.move(moveDistance);}
+            case "melee" -> {return p.meleeAttack(target);}
+            case "ranged" -> {return p.rangedAttack(target);}
+            case "fireball" -> {
                 if (p instanceof Wizard w) {
                     return w.fireBall(target);
                 }
                 return false;
             }
-            case 4 -> {
+            case "ice spike" -> {
                 if (p instanceof Wizard w) {
                     return w.iceSpike(target);
                 }
                 return false;
             }
-            case 5 -> {
+            case "heal" -> {
                 p.Heal(PlayerStats.BASE_HEAL_AMOUNT);
                 return true;
             }
-            case 6 -> {return p.Undo();}
-            case 7 -> {p.retreat(); return true;}
+            case "undo" -> {return p.Undo();}
+            case "retreat" -> {p.retreat(); return true;}
             default -> {return false;}
         }
+    }
+
+    public String[] getExtraInfo(String action) {
+        String[] prompts = actionExtraInfoPrompts.get(action);
+        if (prompts == null) {
+            return null;
+        }
+        return prompts;
     }
 }
