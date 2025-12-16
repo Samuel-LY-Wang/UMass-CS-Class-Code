@@ -116,27 +116,21 @@ public class Entity {
         this.isAlive = status;
     }
 
-    public final double Heal(double amount) {
-        // Returns the amount healed
-        double prevHealth = this.curHealth;
+    public final void Heal(double amount) {
         this.curHealth += amount;
         if (this.curHealth > this.maxHealth) {
             this.curHealth = this.maxHealth;
         }
         this.isAlive = (this.curHealth > 0);
-        return this.curHealth - prevHealth;
     }
 
-    public final double takeDamage(double amount) {
-        // Returns the amount of damage taken
-        double prevHealth = this.curHealth;
+    public final void takeDamage(double amount) {
         double trueDamage = Math.max(0, amount - this.defense);
         this.curHealth -= trueDamage;
         if (this.curHealth <= 0) {
             this.curHealth = 0;
             this.isAlive = false;
         }
-        return prevHealth - this.curHealth;
     }
 
     public final double distanceTo(Entity other) {

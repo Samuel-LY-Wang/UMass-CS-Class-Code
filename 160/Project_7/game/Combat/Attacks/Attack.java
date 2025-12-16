@@ -1,5 +1,7 @@
 package game.Combat.Attacks;
+import game.Combat.Enemies.Enemy;
 import game.Combat.Entities.Entity;
+import game.Combat.Player.Player;
 import game.Stats.RNG;
 
 public abstract class Attack {
@@ -28,6 +30,10 @@ public abstract class Attack {
     public abstract boolean apply(Entity source, Entity target);
     public void successfulAttack(Entity source, Entity target) {
         // Can be overridden for effects on successful attack
+        if (target instanceof Enemy && source instanceof Player) {
+            ((Enemy) target).takeDamage(source.getStat("attackPower") * this.damageMod * RNG.randomDoubleInRange(this.minDamage, this.maxDamage), (Player) source);
+            return;
+        }
         target.takeDamage(source.getStat("attackPower") * this.damageMod * RNG.randomDoubleInRange(this.minDamage, this.maxDamage));
     }
     public final void setDamageMod(double mod) {

@@ -48,4 +48,11 @@ public class Enemy extends Entity {
         player.giveGoldReward(this.goldReward);
     }
 
+    public void takeDamage(double amount, Player source) {
+        super.takeDamage(amount);
+        if (!this.isAlive) {
+            this.giveGoldReward(source);
+        }
+    }
+
 }
