@@ -1,6 +1,6 @@
 package game;
-import game.Combat.Player.Player;
 import game.Combat.Enemies.Enemy;
+import game.Combat.Player.Player;
 
 public final class Utils {
     private Utils() {throw new AssertionError("Class cannot be instantiated, instances prohibited.");} // Prevent instantiation
@@ -42,5 +42,14 @@ public final class Utils {
         else {
             return e.getName() + " - [DEFEATED]";
         }
+    }
+
+    public static final boolean contains(Object a, Object[] arr) {
+        for (Object o : arr) {
+            if (o.equals(a)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
