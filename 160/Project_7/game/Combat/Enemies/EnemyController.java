@@ -12,14 +12,14 @@ public class EnemyController {
         if (distance > 0) {
             // enemy is left of player
             double moveAmount = RNG.randomDoubleInRange(0, Math.min(e.getStat("speed"), distance));
-            moveAmount += RNG.randomDoubleInRange(0, 5); // add a small random factor to avoid predictability
+            moveAmount += RNG.randomDoubleInRange(-5, 5); // add a small random factor to avoid predictability
             moveAmount = Math.min(moveAmount, e.getStat("speed"));
             e.move(moveAmount);
         }
         else if (distance < 0) {
             // enemy is right of player
             double moveAmount = -RNG.randomDoubleInRange(0, Math.min(e.getStat("speed"), -distance));
-            moveAmount -= RNG.randomDoubleInRange(0, 5); // add a small random factor to avoid predictability
+            moveAmount += RNG.randomDoubleInRange(-5, 5); // add a small random factor to avoid predictability
             moveAmount = Math.max(moveAmount, -e.getStat("speed"));
             e.move(moveAmount);
         }
