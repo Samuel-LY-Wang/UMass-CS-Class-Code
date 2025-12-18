@@ -211,7 +211,16 @@ public class ItemList {
 
         // END OF HEALS, BEGINNING OF OTHER/MISC ITEMS
 
-        new Item(1000, "Banana", "It's just a banana.", 1, 1)
+        new RandomItem(1000, "Banana", "A banana. It probably does nothing, right?", 0.01, 
+            new StatBuffItem(-1, "", "", 0, new StatModifier[] {
+                new MultiplyStat("speed", 2.0),
+                new MultiplyStat("attackPower", 2.0),
+                new MultiplyStat("defense", 2.0),
+                new MultiplyStat("maxHealth", 2.0)
+            }, 0)
+        , 1, 1),
+        new UselessItem(1001, "Banana peel", "A banana peel. Surely this one does nothing, right?",
+        0, 100)
     };
 
     public static final Map<Integer, Item> itemMap = new HashMap<>() {{

@@ -4,7 +4,7 @@ import game.Stats.RNG;
 public class ItemSpawner {
     private ItemSpawner() {throw new AssertionError("Class cannot be instantiated, instances prohibited.");} // Prevent instantiation
     public static final Item SpawnItem() {
-        int spawn = RNG.rng.nextInt(ItemList.itemFrequencySum);
+        int spawn = RNG.randomIntInRange(1, ItemList.itemFrequencySum);
         int cumulativeFrequency = 0;
         for (Item item : ItemList.items) {
             cumulativeFrequency += item.frequency;

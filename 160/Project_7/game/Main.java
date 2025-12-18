@@ -98,7 +98,7 @@ public class Main {
                 for (Enemy enemy : enemies) {
                     if (enemy.isAlive()) {
                         // chooses random player to target on
-                        int targetPlayerIndex = RNG.rng.nextInt(players.length);
+                        int targetPlayerIndex = RNG.randomIntInRange(0, players.length - 1);
                         Player targetPlayer = players[targetPlayerIndex];
                         EnemyController.enemyAction(enemy, targetPlayer);
                     }

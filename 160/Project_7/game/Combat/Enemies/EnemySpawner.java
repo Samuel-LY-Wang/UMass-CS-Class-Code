@@ -37,7 +37,7 @@ public class EnemySpawner {
         ArrayList<Enemy> enemyList = new ArrayList<>();
         for (int i=0; i < numGroups; i++) {
             double groupMeanPos = RNG.randomDoubleInRange(-50.0, 50.0); // clusters spawn somewhere between -50 and 50
-            int groupToSpawn = RNG.rng.nextInt(numGroupTypes);;
+            int groupToSpawn = RNG.randomIntInRange(0, numGroupTypes - 1);
             String enemyType = (String) Groups.keySet().toArray()[groupToSpawn];
             int count = Groups.get(enemyType);
             Enemy[] newEnemies = spawnEnemyGroup(enemyType, count, wave, groupMeanPos);

@@ -33,12 +33,10 @@ public class RangedAttack extends Attack {
     public boolean apply(Entity source, Entity target) {
         double dist = source.distanceTo(target);
         double successRate = getSuccessRate(dist);
-        double rng_res = RNG.rng.nextDouble();
-        if (rng_res < successRate) {
+        boolean success = RNG.chance(successRate);
+        if (success) {
             this.successfulAttack(source, target);
-            return true; // attack hit
-        } else {
-            return false; // attack missed
         }
+        return success;
     }
 }
