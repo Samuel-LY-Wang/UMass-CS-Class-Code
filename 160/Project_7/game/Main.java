@@ -29,7 +29,11 @@ public class Main {
         Player p = PlayerFactory.spawnPlayer(playerClass, input);
         final Player[] players = new Player[] {p};
         final ActionMapper[] actionMappers = new ActionMapper[] {new ActionMapper(p)};
+        IO.output(Utils.getPlayerStats(p));
         Enemy[] enemies;
+        String playerChoice = "";
+        Enemy target = null;
+        double moveDistance = 0;
         while (true) {
             wave++;
             waveInProgress = true;
@@ -54,14 +58,14 @@ public class Main {
                     for (String action: validActions) {
                         prompt = prompt + "\n- " + action;
                     }
-                    String playerChoice = InputHandler.getInput(
+                    playerChoice = InputHandler.getInput(
                         prompt,
                         validActions,
                         "Invalid action choice. Please try again."
                     );
                     String[] extraInfo = actionMapper.getExtraInfo(playerChoice);
-                    Enemy target = null;
-                    double moveDistance = 0;
+                    target = null;
+                    moveDistance = 0;
                     if (extraInfo != null) {
                         StringBuilder sb = new StringBuilder();
                         for (int j=0; j<enemies.length; j++) {
@@ -93,10 +97,13 @@ public class Main {
                     }
                     boolean successful = actionMapper.takeAction(playerChoice, target, moveDistance);
                     IO.output("Action " + (successful ? "succeeded!" : "failed."));
+                    if (playerChoice.equals("undo")) {
+                        break; // skip to enemy actions
+                    }
                 }
                 // all players have acted
                 for (Enemy enemy : enemies) {
-                    if (enemy.isAlive()) {
+                    if (enemy.isAlive() && !playerChoice.equals("undo")) {
                         // chooses random player to target on
                         int targetPlayerIndex = RNG.randomIntInRange(0, players.length - 1);
                         Player targetPlayer = players[targetPlayerIndex];

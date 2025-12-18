@@ -35,6 +35,16 @@ public final class Utils {
         return p.getName() + " the " + p.getClassName() + " - HP: " + p.getStat("curHealth") + "/" + p.getStat("maxHealth") + ", Located at: " + String.format("%.2f", p.getStat("position"));
     }
 
+    public static final String getPlayerStats(Player p) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Player Stats for ").append(p.getName()).append(" the ").append(p.getClassName()).append(":\n");
+        sb.append("- Health: ").append(p.getStat("maxHealth")).append("/").append(p.getStat("maxHealth")).append("\n");
+        sb.append("- Attack: ").append(p.getStat("attackPower")).append("\n");
+        sb.append("- Defense: ").append(p.getStat("defense")).append("\n");
+        sb.append("- Speed: ").append(p.getStat("speed")).append("\n");
+        return sb.toString();
+    }
+
     public static final String getEnemyStatus(Enemy e) {
         if (e.isAlive()) {
             return e.getName() + " - HP: " + e.getStat("curHealth") + "/" + e.getStat("maxHealth") + ", Located at: " + String.format("%.2f", e.getStat("position"));
